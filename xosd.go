@@ -73,6 +73,19 @@ func (x *XOSD) SetTimeout(seconds int) error {
 	return nil
 }
 
+// SetVerticalOffset sets the vertical offset of the XOSD window.
+func (x *XOSD) SetVerticalOffset(pixels int) error {
+	x.mu.Lock()
+	defer x.mu.Unlock()
+
+	r := C.xosd_set_vertical_offset(x.osd, C.int(pixels))
+	if r == -1 {
+		return errors.New(C.GoString(C.xosd_error))
+	}
+
+	return nil
+}
+
 // SetAlign sets the alignment of the text along the horizontal axis.
 func (x *XOSD) SetAlign(alignment Align) error {
 	x.mu.Lock()
